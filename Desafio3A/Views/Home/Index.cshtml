@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section script{
+    <script src="~/Scripts/app.js"></script>
+}
+<div ng-controller="AppController" class="ng-cloak">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="alert alert-info" role="alert">
+                <h5>Atividades do desafio</h5>
+                <p>A lista de compras ao lado está funcionando parcialmente e salvando os dados no banco de dados local. Use a tela, se familiarize com o código pois você precisará:</p>
+                <div>
+                    <ol>
+                        <li>Implementar o código do botão excluir que não está fazendo nada</li>
+                        <li>Ajustar o código do cálculo do valor total para levar em conta a quantidade de cada alimento</li>
+                        <li>Ao incluir um alimento que já exista na lista, aumentar a quantidade do mesmo</li>
+                        <li>Corrigir o metodo salvar no servidor para atualizar no banco a quantidade digitada</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h2>Lista de Compras</h2>
+            <div class="row">
+                <div class="col-sm-8 mb-2">
+                    <md-autocomplete md-no-cache="true" md-selected-item="alimentoBuscado"  md-min-length="2"
+                                     md-search-text="termo" md-items="alimento in buscarAlimentos(termo)"
+                                     md-item-text="alimento.Nome" placeholder="Pesquise um alimento...">
+                        <span>{{ alimento.Nome }}</span>
+                    </md-autocomplete>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" ng-click="add()" ng-disabled="!alimentoBuscado">Adicionar</button>
+                </div>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th width="100">Quantidade</th>
+                        <th>Subtotal</th>
+                        <th width="100"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="alimento in alimentos track by $index">
+                        <td>{{alimento.Nome}}</td>
+                        <td>{{alimento.Preco | currency}}</td>
+                        <td>
+                            <input type="number" min="1" class="form-control" ng-model="alimento.Quantidade" />
+                        </td>
+                        <td>
+                            {{alimento.Preco * alimento.Quantidade | currency}}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm" title="Remover" ng-click="remover(alimento,$index)"><i class="fa fa-trash-o ml-1 mr-1"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div ng-show="carregando">
+                <i class="fa fa-spinner fa-spin"></i>
+                <b>Carregando...</b>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6 text-right">
+
+                    <h5>Total: {{total() | currency}}</h5>
+                    <button class="mt-3 btn btn-lg btn-success" ng-click="salvar()">Salvar alterações</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
