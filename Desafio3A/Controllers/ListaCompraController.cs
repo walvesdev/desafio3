@@ -48,7 +48,6 @@ namespace Desafio3A.Controllers
         [HttpPost]
         public JsonResult Salvar(List<ListaCompra> dadosWeb)
         {
-            //var itensListaBanco = db.ListaCompra.ToList();
             var itensListaBanco = db.Set<ListaCompra>().ToList();
 
             foreach (var item in dadosWeb)
@@ -65,7 +64,6 @@ namespace Desafio3A.Controllers
 
             foreach (var listItem in itensListaBanco)
             {
-                //var entidade = db.Set<ListaCompra>().Find(listItem.Id);              
 
                 var itemLista = dadosWeb.FirstOrDefault(f => f.Id == listItem.Id);
 
